@@ -1,4 +1,4 @@
-# ligth-novel-kindle-integration
+# Ligth novel kindle integration
 
 
 <div align="center">
