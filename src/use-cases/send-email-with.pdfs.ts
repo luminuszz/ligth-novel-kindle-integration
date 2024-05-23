@@ -9,6 +9,8 @@ interface SendEmailWithPdfsInput {
 export async function sendEmailWithPdfs({
   filesPaths,
 }: SendEmailWithPdfsInput) {
+
+  
   const { error } = await resend.emails.send({
     to: env.KINDLE_EMAIL,
     subject: 'Convert',

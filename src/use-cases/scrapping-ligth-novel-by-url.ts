@@ -35,23 +35,6 @@ export async function scrapingLightNovelByUrl({
 
     const title = await page.$eval('.entry-title', (el) => el.innerHTML);
 
-    const regexResults = title.match(/(Mushoku Tensei|Vol\. \d+|Cap\. \d+)/g);
-
-    let fileName = ``;
-
-    if (regexResults) {
-      fileName = regexResults
-        .join('-')
-        .normalize('NFD')
-        .replaceAll(' ', '-')
-        .replaceAll('.', '')
-        .concat('.pdf');
-    } else {
-      fileName = `file-${Date.now()}`;
-    }
-
-    const path = getPath(fileName);
-
     await page.setContent(readContent, { waitUntil: 'networkidle2' });
 
     const pdfStream = await page.pdf({
@@ -59,6 +42,20 @@ export async function scrapingLightNovelByUrl({
     });
 
     await page.close();
+
+    const parsedTitle = title.match(/(Mushoku Tensei|Vol\. \d+|Cap\. \d+)/g);
+
+    const fileName = parsedTitle 
+      ? parsedTitle
+      .join('-')
+      .normalize('NFD')
+      .replaceAll(' ', '-')
+      .replaceAll('.', '')
+      .concat('.pdf') 
+      : `file-${Date.now()}`
+
+
+    const path = getPath(fileName);
 
     const file = Bun.file(path);
 
