@@ -1,4 +1,10 @@
-# ligth-novel-kindle-integration
+# Ligth novel kindle integration
+
+
+<div align="center">
+   <img src="https://github.com/luminuszz/ligth-novel-kindle-integration/assets/48535259/f4d9239d-fdc3-4da3-ac78-0282a4a4b388" />
+</div>
+
 
 To install dependencies:
 
@@ -12,7 +18,7 @@ To run:
 bun  dev
 ```
 
-## This project for automate my scrapping for light novels in -> tsundoku.com.br
+#### This project for automate my scrapping for light novels in -> tsundoku.com.br
 
 
 ### Steps
