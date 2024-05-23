@@ -1,4 +1,5 @@
-import { Resend } from 'resend';
-import { env } from '../utils/env';
+import { Resend } from 'resend'
 
-export const resend = new Resend(env.RESEND_API_SECRET_KEY);
+import { env } from '../utils/env'
+
+export const resend = new Resend(env.RESEND_API_SECRET_KEY)

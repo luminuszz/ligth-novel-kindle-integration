@@ -1,1 +1,1 @@
-export type FilesData = Array<{ filename: string; filePath: string }>;
+export type FilesData = Array<{ filename: string; filePath: string }>

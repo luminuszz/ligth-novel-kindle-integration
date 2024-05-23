@@ -1,21 +1,22 @@
-import fastifyCors from '@fastify/cors';
-import fastify from 'fastify';
+import fastifyCors from '@fastify/cors'
+import fastify from 'fastify'
 import {
   serializerCompiler,
   validatorCompiler,
   type ZodTypeProvider,
-} from 'fastify-type-provider-zod';
-import { importFilesByUrl } from './routes/import-files-by-url';
+} from 'fastify-type-provider-zod'
 
-const app = fastify({ logger: true }).withTypeProvider<ZodTypeProvider>();
+import { importFilesByUrl } from './routes/import-files-by-url'
 
-app.setSerializerCompiler(serializerCompiler);
-app.setValidatorCompiler(validatorCompiler);
+const app = fastify({ logger: true }).withTypeProvider<ZodTypeProvider>()
 
-app.register(fastifyCors, { origin: ['http://localhost:3000'] });
+app.setSerializerCompiler(serializerCompiler)
+app.setValidatorCompiler(validatorCompiler)
 
-app.register(importFilesByUrl);
+app.register(fastifyCors, { origin: ['http://localhost:3000'] })
 
-app.listen({ port: 3333 });
+app.register(importFilesByUrl)
 
-export { app };
+app.listen({ port: 3333 })
+
+export { app }
