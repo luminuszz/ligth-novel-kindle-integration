@@ -14,7 +14,7 @@ export async function sendEmailWithPdfs({
     content: Buffer.from(file.filePath),
   }))
 
-  const { error, data } = await resend.emails.send({
+  const { error } = await resend.emails.send({
     to: env.KINDLE_EMAIL,
     subject: 'Convert',
     from: env.RESENT_FROM_EMAIL,
@@ -24,15 +24,5 @@ export async function sendEmailWithPdfs({
 
   if (error) {
     throw new Error('Error sending email: ' + error.message)
-  }
-
-  if (data) {
-    const email = await resend.emails.get(data.id)
-
-    const isDelivered = email.data?.last_event === 'delivered'
-
-    if (!isDelivered) {
-      throw new Error('Error sending email: Email not delivered')
-    }
   }
 }
