@@ -9,18 +9,30 @@ interface SendEmailWithPdfsInput {
 export async function sendEmailWithPdfs({
   filesPaths,
 }: SendEmailWithPdfsInput) {
-  const { error } = await resend.emails.send({
+  const pdfFiles = filesPaths.map((file) => ({
+    filename: file.filename,
+    content: Buffer.from(file.filePath),
+  }))
+
+  const { error, data } = await resend.emails.send({
     to: env.KINDLE_EMAIL,
     subject: 'Convert',
     from: env.RESENT_FROM_EMAIL,
-    attachments: filesPaths.map((file) => ({
-      filename: file.filename,
-      content: Buffer.from(file.filePath),
-    })),
+    attachments: pdfFiles,
     text: 'Convert to Kindle format.',
   })
 
   if (error) {
     throw new Error('Error sending email: ' + error.message)
+  }
+
+  if (data) {
+    const email = await resend.emails.get(data.id)
+
+    const isDelivered = email.data?.last_event === 'delivered'
+
+    if (!isDelivered) {
+      throw new Error('Error sending email: Email not delivered')
+    }
   }
 }
