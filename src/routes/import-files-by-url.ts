@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { deleteTempFiles } from '../use-cases/delete-temp-files'
 import { scrapingLightNovelByUrl } from '../use-cases/scrapping-ligth-novel-by-url'
 import { sendEmailWithPdfs } from '../use-cases/send-email-with.pdfs'
 
@@ -16,7 +17,7 @@ export async function importFilesByUrl(app: FastifyInstance) {
     {
       schema: {
         body: z.object({
-          urls: z.array(lightNovelUrlSchema),
+          urls: z.array(lightNovelUrlSchema).min(1),
         }),
       },
     },
@@ -24,9 +25,11 @@ export async function importFilesByUrl(app: FastifyInstance) {
       try {
         const { urls } = req.body
 
-        const filePaths = await scrapingLightNovelByUrl({ urls })
+        const { filesPaths } = await scrapingLightNovelByUrl({ urls })
 
-        await sendEmailWithPdfs(filePaths)
+        await sendEmailWithPdfs({ filesPaths })
+
+        await deleteTempFiles({ filesPaths })
 
         reply.code(201)
       } catch (e) {
