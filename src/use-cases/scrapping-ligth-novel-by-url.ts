@@ -37,7 +37,7 @@ export async function scrapingLightNovelByUrl({
 
     const title = await page.$eval('.entry-title', (el) => el.innerHTML)
 
-    await page.setContent(title)
+    await page.setContent(title, { waitUntil: 'networkidle2' })
     await page.setContent(readContent, { waitUntil: 'networkidle2' })
 
     const pdfStream = await page.pdf({
